@@ -1,11 +1,8 @@
 /*----- constants -----*/
-const API_URL = `https://geo.ipify.org/api/v1?apiKey=${process.env.apiKey}&ipAddress=`
+const API_URL = ''
 
 /*----- app's state (variables) -----*/
 let ipAddress;
-let location;
-let timezone;
-let isp;
 
 /*
   const data = {
@@ -30,9 +27,6 @@ init();
 
 function init() {
   ipAddress = null;
-  location = null;
-  timezone = null;
-  isp = null;
 
   // render();
 }
@@ -41,6 +35,8 @@ function handleSubmit() {
   ipAddress = document.getElementById('user-input').value;
 
   console.log(ipAddress);
+
+  //queryAPI(ipAddress);
   // query API
 }
 
@@ -49,7 +45,7 @@ function render() {
 }
 
 function queryAPI(ip) {
-  fetch(`API_URL${ip}`)
+  fetch(API_URL + ip)
   .then((response) => {
     return response.json();
   })
