@@ -17,3 +17,7 @@ body {
   height: 50px;
   width: 50px;
 }
+
+#map {
+  height: 50vh;
+}
