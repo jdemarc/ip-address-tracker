@@ -5,18 +5,20 @@ const API_URL = ''
 let ipAddress;
 
 /*
-  const data = {
+  const address = {
+    ip: ''; // "8.8.8.8"
     region: ''; // "California"
     city: ''; // "Mountain View"
-    lat: 0; 37.40599
-    lng: 0; -122.078514
-    timezone: ''; "-07:00",
+    lat: 0; // 37.40599
+    lng: 0; // -122.078514
+    timezone: ''; // "-07:00",
 
   }
 */
 
 /*----- cached element references -----*/
 const submitBtnEl = document.getElementById('search');
+const main = document.querySelector('main');
 
 /*----- event listeners -----*/
 submitBtnEl.addEventListener('click', handleSubmit);
@@ -28,7 +30,7 @@ init();
 function init() {
   ipAddress = null;
 
-  // render();
+
 }
 
 function handleSubmit() {
@@ -36,12 +38,22 @@ function handleSubmit() {
 
   console.log(ipAddress);
 
-  //queryAPI(ipAddress);
+  queryAPI(ipAddress);
   // query API
 }
 
-function render() {
-  // render API content
+function showAddress(result) {
+  const section = document.createElement('section');
+  section.setAttribute('class', 'tracked');
+  
+  main.appendChild(section);
+  
+  for (property in result) {
+    const div = document.createElement('div');
+    div.textContent = result[property];
+
+    section.appendChild(div);
+  }
 }
 
 function queryAPI(ip) {
@@ -50,6 +62,21 @@ function queryAPI(ip) {
     return response.json();
   })
   .then((result) => {
-    console.log(`Region: ${result.location.region}`);
+
+    const address =  {
+      ip: result.ip,
+      region: result.location.region,
+      city: result.location.city,
+      lat: result.location.lat,
+      lng: result.location.lng,
+      timezone: result.location.timezone
+    }
+
+    console.log(address);
+    showAddress(address);
+    
+  })
+  .catch((error) => {
+    console.log('Error: ', error);
   })
 }
