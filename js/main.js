@@ -18,14 +18,12 @@ init();
 function init() {
   ipAddress = '8.8.8.8';
   //queryAPI(ipAddress);
-
 }
 
 function handleSubmit() {
   ipAddress = document.getElementById('user-input').value;
 
   queryAPI(ipAddress);
-  // query API
 }
 
 function showAddress(address) {
