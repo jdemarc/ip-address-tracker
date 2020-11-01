@@ -16,8 +16,8 @@ submitBtnEl.addEventListener('click', handleSubmit);
 init();
 
 function init() {
-  ipAddress = null;
-
+  ipAddress = '8.8.8.8';
+  //queryAPI(ipAddress);
 
 }
 
@@ -36,6 +36,7 @@ function showAddress(address) {
   
   for (property in address) {
     const div = document.createElement('div');
+    div.setAttribute('class', 'address-info');
     div.textContent = address[property];
 
     section.appendChild(div);
