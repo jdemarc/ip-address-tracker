@@ -1,12 +1,17 @@
 /*----- constants -----*/
-const API_URL = ''
+const API_URL = 0;
+const MAPBOX_ACCESS_KEY = 0;
 
 /*----- app's state (variables) -----*/
 let ipAddress;
 
 /*----- cached element references -----*/
 const submitBtnEl = document.getElementById('search');
-const main = document.querySelector('main');
+
+const ipEl = document.getElementById('ip');
+const locEl = document.getElementById('loc');
+const tzEl = document.getElementById('tz');
+const ispEl = document.getElementById('isp');
 
 /*----- event listeners -----*/
 submitBtnEl.addEventListener('click', handleSubmit);
@@ -16,8 +21,8 @@ submitBtnEl.addEventListener('click', handleSubmit);
 init();
 
 function init() {
-  ipAddress = '8.8.8.8';
-  //queryAPI(ipAddress);
+  ipAddress = '';
+  queryAPI(ipAddress);
 }
 
 function handleSubmit() {
@@ -27,24 +32,14 @@ function handleSubmit() {
 }
 
 function showAddress(address) {
-  const section = document.createElement('section');
-  section.setAttribute('class', 'tracked');
-  
-  main.appendChild(section);
-  
-  for (property in address) {
-    const div = document.createElement('div');
-    div.setAttribute('class', 'address-info');
-    div.textContent = address[property];
-
-    section.appendChild(div);
-  }
-
-  showMap(address.lat, address.lng);
+  ipEl.textContent = address.ip;
+  locEl.textContent = address.location;
+  tzEl.textContent = address.timezone;
+  ispEl.textContent = address.isp;
 }
 
-function showMap(lat, lng) {
-  let myMap = L.map('map').setView([lat, lng], 15)
+function showMap(coords) {
+  let myMap = L.map('map').setView([coords.lat, coords.lng], 15)
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -52,10 +47,10 @@ function showMap(lat, lng) {
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
-    accessToken: ''
+    accessToken: MAPBOX_ACCESS_KEY,
   }).addTo(myMap);
 
-  var marker = L.marker([lat, lng]).addTo(myMap);
+  var marker = L.marker([coords.lat, coords.lng]).addTo(myMap);
 }
 
 function queryAPI(ip) {
@@ -65,17 +60,20 @@ function queryAPI(ip) {
   })
   .then((result) => {
 
-    const address =  {
+    const address = {
       ip: result.ip,
-      region: result.location.region,
-      city: result.location.city,
+      location: `${result.location.city}, ${result.location.region}`,
+      timezone: result.location.timezone,
+      isp: result.isp
+    }
+    
+    const coords = {
       lat: result.location.lat,
-      lng: result.location.lng,
-      timezone: result.location.timezone
+      lng: result.location.lng
     }
 
-    // console.log(address);
     showAddress(address);
+    showMap(coords);
     
   })
   .catch((error) => {
