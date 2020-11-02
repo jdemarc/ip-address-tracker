@@ -8,7 +8,7 @@ A small app that allows you to determine a location based on an IP address. By d
 
 ## Screenshot(s)
 
-<img src='https://i.imgur.com/p54ycYA.png'>
+<img src='https://i.imgur.com/He5OtgY.png'>
 
 ## Technology Used
 
