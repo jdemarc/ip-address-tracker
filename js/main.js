@@ -1,6 +1,6 @@
 /*----- constants -----*/
-const API_URL = 0;
-const MAPBOX_ACCESS_KEY = 0;
+const API_URL = '0'
+const MAPBOX_ACCESS_KEY = '0'
 
 /*----- app's state (variables) -----*/
 let ipAddress;
@@ -22,6 +22,7 @@ init();
 
 function init() {
   ipAddress = '';
+
   queryAPI(ipAddress);
 }
 
@@ -39,7 +40,11 @@ function showAddress(address) {
 }
 
 function showMap(coords) {
-  let myMap = L.map('map').setView([coords.lat, coords.lng], 15)
+  if (L.DomUtil.get('map')) { 
+    L.DomUtil.get('map')._leaflet_id = null; 
+ }
+
+  const myMap = L.map('map').setView([coords.lat, coords.lng], 15)
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
